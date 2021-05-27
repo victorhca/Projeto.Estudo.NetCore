@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Projeto.Estudo.NetCore.Application.Service;
 using Projeto.Estudo.NetCore.Data.Context;
+using Projeto.Estudo.NetCore.Data.Decorators;
 using Projeto.Estudo.NetCore.Data.Repository;
 using Projeto.Estudo.NetCore.Domain.Interfaces.Application;
 using Projeto.Estudo.NetCore.Domain.Interfaces.Repository;
@@ -45,6 +46,15 @@ namespace Projeto.Estudo.NetCore.Api
 
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioApplication, UsuarioApplication>();
+            services.Decorate<IUsuarioRepository, UsuarioRepositoryCacheDecorator>();
+            var a = Configuration.GetValue<int>("MEM_CACHE_SIZE_LIMIT");
+
+            services.AddSingleton<IMemoryCacheRepository>(
+                new MemoryCacheRepository(
+                    Configuration.GetValue<int>("MEM_CACHE_SIZE_LIMIT"), 
+                    Configuration.GetValue<int>("MEM_CACHE_ABSOLUTE_EXPIRATION_IN_SEC"), 
+                    Configuration.GetValue<int>("MEM_CACHE_SLIDING_EXPIRATION_IN_SEC")
+                    ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

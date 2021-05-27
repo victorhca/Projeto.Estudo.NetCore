@@ -22,6 +22,7 @@ namespace Projeto.Estudo.NetCore.Api.Controllers
         }
 
         [ProducesResponseType(typeof(UsuarioDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("id")]
         public async Task<IActionResult> GetAsync(int id)

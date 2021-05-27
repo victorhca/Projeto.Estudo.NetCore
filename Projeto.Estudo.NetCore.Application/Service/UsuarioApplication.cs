@@ -53,6 +53,10 @@ namespace Projeto.Estudo.NetCore.Application.Service
             }
 
             var usuario = await _usuarioRepository.GetAsync(id);
+            if(usuario == null)
+            {
+                throw new NotFoundException("User not found!");
+            }
             return new UsuarioDto()
             {
                 Id = usuario.Id,
